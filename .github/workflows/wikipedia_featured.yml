@@ -5,6 +5,9 @@ on:
     - cron: "0 6 * * *"  # runs daily at 6:00 UTC (~1 AM EST)
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   scrape_wikipedia:
     name: Scrape and update Wikipedia daily
@@ -31,8 +34,6 @@ jobs:
       - name: Retrieve Wikipedia data
         uses: nick-fields/retry@v3
         with:
-          timeout_seconds: 30
-          max_attempts: 3
           command: Rscript -e 'source("get_wikipedia_daily.R")'
           continue_on_error: true
 
@@ -41,3 +42,5 @@ jobs:
         with:
           commit_message: Update Wikipedia daily
           branch: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
