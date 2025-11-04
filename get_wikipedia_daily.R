@@ -26,13 +26,13 @@ entry <- tibble(
   link = featured_url
 )
 
-
 dir.create("data", showWarnings = FALSE)
 file <- "data/wikipedia_daily.csv"
 
 # Append if exists, otherwise create
 if (file.exists(file)) {
-  write_csv(df, file, append = TRUE, col_names = FALSE)
+  write_csv(entry, file, append = TRUE, col_names = FALSE)
 } else {
-  write_csv(df, file)
+  write_csv(entry, file)
 }
+
