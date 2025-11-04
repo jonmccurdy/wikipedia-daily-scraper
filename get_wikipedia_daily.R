@@ -19,7 +19,6 @@ featured_link <- page |>
   html_attr("href")
 
 featured_url <- paste0("https://en.wikipedia.org", featured_link)
-  
 
 entry <- tibble(
   datetime = format(Sys.time(), tz = "America/New_York", usetz = TRUE),
@@ -27,14 +26,13 @@ entry <- tibble(
   link = featured_url
 )
 
-outfile <- "data/wikipedia_daily.csv"
 
-if (file.exists(outfile)) {
-  old <- read_csv(outfile, show_col_types = FALSE)
-  all <- bind_rows(old, entry)
+dir.create("data", showWarnings = FALSE)
+file <- "data/wikipedia_daily.csv"
+
+# Append if exists, otherwise create
+if (file.exists(file)) {
+  write_csv(df, file, append = TRUE, col_names = FALSE)
 } else {
-  all <- entry
+  write_csv(df, file)
 }
-
-# Save updated data
-write_csv(all, outfile)
